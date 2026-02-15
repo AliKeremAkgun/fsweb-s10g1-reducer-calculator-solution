@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   ADD_ONE,
   APPLY_NUMBER,
@@ -9,38 +8,29 @@ import {
   MEMORY_PLUS,
   DIGIT,
   CALCULATE,
-  applyNumber,
-} from "./../actions";
+} from "../actions";
 
 export const initialState = {
-  total: 100,
-  operation: "-",
-  memory: 100,
+  total: 0,
+  operation: "*",
+  memory: 0,
   screen: "0",
-  temp: 0,
+  temp: null,
 };
 
 const calculateResult = (num1, num2, operation) => {
   switch (operation) {
     case "+":
       return Number(num1) + Number(num2);
-    case "*":
-      return num1 * num2;
     case "-":
-      return num1 - num2;
+      return Number(num1) - Number(num2);
+    case "*":
+      return Number(num1) * Number(num2);
     default:
-      return;
+      return Number(num2);
   }
 };
 
-const typeDigit = (screen, numKey) => {
-  // return screen.toString() + numKey.toString();
-  console.log(screen, numKey);
-  return `${screen}${numKey}`;
-};
-
-// const [value, setValue] = useState()
-// const reducer = (state = initialState, action) => {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ONE:
@@ -53,6 +43,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         total: calculateResult(state.total, action.payload, state.operation),
+        screen: action.payload.toString(),
       };
 
     case CHANGE_OPERATION:
@@ -60,58 +51,60 @@ const reducer = (state = initialState, action) => {
         ...state,
         operation: action.payload,
         temp: state.screen,
-        screen: 0,
+        screen: "0",
       };
 
     case CLEAR:
       return {
         ...state,
         total: 0,
-        screen: 0,
-        temp: 0,
+        screen: "0",
+        temp: null,
       };
 
-    case MEMORY_CLEAR: {
-      return {
-        ...state,
-        memory: 0,
-      };
-    }
-
-    case MEMORY_RECALL: {
-      return {
-        ...state,
-        screen: calculateResult(state.screen, state.memory, state.operation),
-        total: calculateResult(state.screen, state.memory, state.operation),
-      };
-    }
-
-    case MEMORY_PLUS: {
+    case MEMORY_PLUS:
       return {
         ...state,
         memory: state.total,
       };
-    }
 
-    case DIGIT: {
+    case MEMORY_RECALL:
+      return {
+        ...state,
+        screen: state.memory.toString(),
+        total: state.memory,
+      };
+
+    case MEMORY_CLEAR:
+      return {
+        ...state,
+        memory: 0,
+      };
+
+    case DIGIT:
       return {
         ...state,
         screen:
-          state.screen == 0
-            ? action.payload
-            : typeDigit(state.screen, action.payload),
+          state.screen === "0"
+            ? action.payload.toString()
+            : state.screen + action.payload.toString(),
       };
-    }
 
-    case CALCULATE: {
-      const calculation = calculateResult(
-        state.screen,
+    case CALCULATE:
+      if (state.temp === null) return state;
+
+      const result = calculateResult(
         state.temp,
+        state.screen,
         state.operation
       );
 
-      return { ...state, total: calculation, screen: calculation, temp: 0 };
-    }
+      return {
+        ...state,
+        total: result,
+        screen: result.toString(),
+        temp: null,
+      };
 
     default:
       return state;

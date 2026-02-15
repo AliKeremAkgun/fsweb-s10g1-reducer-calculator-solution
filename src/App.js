@@ -4,17 +4,15 @@ import TotalDisplay from "./components/TotalDisplay";
 import CalcButton from "./components/CalcButton";
 
 import {
-  ADD_ONE,
-  APPLY_NUMBER,
-  applyNumber,
-  CHANGE_OPERATION,
-  CLEAR,
-  MEMORY_CLEAR,
-  MEMORY_RECALL,
-  MEMORY_PLUS,
+  changeOperation,
+  clearDisplay,
+  memoryPlus,
+  memoryRecall,
+  memoryClear,
   screenType,
-  CALCULATE,
+  calculate,
 } from "./actions";
+
 import reducer, { initialState } from "./reducers";
 
 function App() {
@@ -30,11 +28,12 @@ function App() {
         <div className="col-md-12 d-flex justify-content-center">
           <form name="Cal">
             <TotalDisplay value={state.screen} />
+
             <div className="row details">
               <span id="operation">
                 <b>Operation:</b> {state.operation}
               </span>
-              <span id="memory">
+              <span id="temp">
                 <b>Temp:</b> {state.temp}
               </span>
               <span id="memory">
@@ -42,27 +41,23 @@ function App() {
               </span>
             </div>
 
+            {/* MEMORY */}
             <div className="row">
               <CalcButton
-                onClick={() => {
-                  dispatch({ type: MEMORY_PLUS });
-                }}
+                onClick={() => dispatch(memoryPlus())}
                 value={"M+"}
               />
               <CalcButton
-                onClick={() => {
-                  dispatch({ type: MEMORY_RECALL });
-                }}
+                onClick={() => dispatch(memoryRecall())}
                 value={"MR"}
               />
               <CalcButton
-                onClick={() => {
-                  dispatch({ type: MEMORY_CLEAR });
-                }}
+                onClick={() => dispatch(memoryClear())}
                 value={"MC"}
               />
             </div>
 
+            {/* 1 2 3 */}
             <div className="row">
               <CalcButton
                 onClick={(e) => dispatch(screenType(e.target.value))}
@@ -78,6 +73,7 @@ function App() {
               />
             </div>
 
+            {/* 4 5 6 */}
             <div className="row">
               <CalcButton
                 onClick={(e) => dispatch(screenType(e.target.value))}
@@ -93,6 +89,7 @@ function App() {
               />
             </div>
 
+            {/* 7 8 9 */}
             <div className="row">
               <CalcButton
                 onClick={(e) => dispatch(screenType(e.target.value))}
@@ -107,36 +104,40 @@ function App() {
                 value={9}
               />
             </div>
-            <div className="row ">
+
+            {/* 0 CE = */}
+            <div className="row">
               <CalcButton
                 onClick={(e) => dispatch(screenType(e.target.value))}
                 value={0}
               />
               <CalcButton
-                onClick={(e) => dispatch({ type: CLEAR })}
+                onClick={() => dispatch(clearDisplay())}
                 value={"CE"}
               />
               <CalcButton
-                onClick={(e) => dispatch({ type: CALCULATE })}
+                onClick={() => dispatch(calculate())}
                 value={"="}
               />
             </div>
+
+            {/* OPERATIONS */}
             <div className="row">
               <CalcButton
                 onClick={(e) =>
-                  dispatch({ type: CHANGE_OPERATION, payload: e.target.value })
+                  dispatch(changeOperation(e.target.value))
                 }
                 value={"+"}
               />
               <CalcButton
                 onClick={(e) =>
-                  dispatch({ type: CHANGE_OPERATION, payload: e.target.value })
+                  dispatch(changeOperation(e.target.value))
                 }
                 value={"*"}
               />
               <CalcButton
                 onClick={(e) =>
-                  dispatch({ type: CHANGE_OPERATION, payload: e.target.value })
+                  dispatch(changeOperation(e.target.value))
                 }
                 value={"-"}
               />
