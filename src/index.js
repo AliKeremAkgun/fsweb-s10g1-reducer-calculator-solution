@@ -19,4 +19,4 @@ reportWebVitals();
 // https://fsweb-s10g1-reducer-calculator-solu-xi.vercel.app
 //
 // GitHub Repository:
-// https://github.com/kullaniciAdin/fsweb-s10g1-reducer
+// https://github.com/AliKeremAkgun/fsweb-s10g1-reducer-calculator-solution
