@@ -13,3 +13,10 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+
+// Live Application URL:
+// https://fsweb-s10g1-reducer-calculator-solu-xi.vercel.app
+//
+// GitHub Repository:
+// https://github.com/kullaniciAdin/fsweb-s10g1-reducer
